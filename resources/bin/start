@@ -86,6 +86,7 @@ if [ -z "${AVOID_COMPOSER}" ]; then
     fi
 fi
 
+su -c "/usr/local/bin/setup-config" -s /bin/sh www-data
 
 echo "Patching Cache Server for FPC to make varnish work."
 curl -o /src/vendor/magento/module-page-cache/Model/Cache/Server.php https://raw.githubusercontent.com/davidalger/magento2/6e2882a06170cc1ed10f6b9495fa7ab37c0e6c49/app/code/Magento/PageCache/Model/Cache/Server.php
@@ -172,9 +173,6 @@ chmod -R 0777 /src
 
 # Only start php-fpm if successful ...
 if [ -f /src/app/etc/env.php ]; then
-    echo "Starting CRON"
-    /usr/sbin/cron
-
     echo "Starting php-fpm"
     /usr/local/sbin/php-fpm
 else
