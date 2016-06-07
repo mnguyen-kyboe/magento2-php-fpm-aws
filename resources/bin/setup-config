@@ -6,5 +6,3 @@ echo "*/1 * * * * /usr/local/bin/php $WWW_DIR/update/cron.php" | crontab - \
   && (crontab -l ; echo "*/1 * * * * /usr/local/bin/php $WWW_DIR/bin/magento-php cron:run") | crontab - \
   && (crontab -l ; echo "*/1 * * * * /usr/local/bin/php $WWW_DIR/bin/magento-php setup:cron:run") | crontab -
 
-# Start the cron service
-/usr/sbin/cron

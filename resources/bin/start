@@ -173,8 +173,12 @@ chmod -R 0777 /src
 
 # Only start php-fpm if successful ...
 if [ -f /src/app/etc/env.php ]; then
-    echo "Starting php-fpm"
+   echo "Starting the cron service"
+   /usr/sbin/cron
+
+   echo "Starting php-fpm"
     /usr/local/sbin/php-fpm
 else
     echo "ERROR: could not find /src/composer.lock in magento php container.... Did you mount magento root dir as a volume to /src? You should..."
 fi
+v
