@@ -88,9 +88,6 @@ fi
 
 su -c "/usr/local/bin/setup-config" -s /bin/sh www-data
 
-echo "Patching Cache Server for FPC to make varnish work."
-curl -o /src/vendor/magento/module-page-cache/Model/Cache/Server.php https://raw.githubusercontent.com/davidalger/magento2/6e2882a06170cc1ed10f6b9495fa7ab37c0e6c49/app/code/Magento/PageCache/Model/Cache/Server.php
-
 
 if [ -d /src/bin ]; then
   cp /usr/local/bin/magento /src/bin/
