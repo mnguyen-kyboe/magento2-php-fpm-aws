@@ -1,4 +1,4 @@
-FROM php:7.0.2-fpm
+FROM php:7.0.7-fpm
 MAINTAINER Petter Kjelkenes <kjelkenes@gmail.com>
 
 RUN apt-get update \
