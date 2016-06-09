@@ -76,7 +76,7 @@ foreach($newHosts as $host) {
 if ($invalidate_cache) {
     echo "Cleared cache config, reason varnish host added or deleted.\n";
     // We only need to clean config, now that we know that the env.php file changed...
-    passthru("/src/bin/magento cache:clean config");
+    passthru("/src/bin/magento-php cache:clean config"); // dont use bin/magento instead bin/magento-php since su - must run from terminal.
 }
 
 
