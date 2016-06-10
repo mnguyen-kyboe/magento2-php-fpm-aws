@@ -78,6 +78,13 @@ if [ -z "${AVOID_COMPOSER}" ]; then
     chown -R www-data:www-data /var/www
     chown -R www-data:www-data /src
     chown -R www-data:www-data /home/composer
+    
+    # clearning composer cache is a bad thing because deployments takes much longer
+    # however  because of the way oauth token for bitbucket private repos are cached and token will expire
+    # we clear the cache. This is bitbucket specific issue.
+    # see https://github.com/composer/composer/issues/5389#issuecomment-224891791
+    su -c "composer clearcache" -s /bin/sh www-data
+    
     su -c "composer install --optimize-autoloader --prefer-dist" -s /bin/sh www-data
 
     if [ ! -f /src/composer.lock ]; then
