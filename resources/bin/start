@@ -141,8 +141,18 @@ mysql -u "${RDS_USERNAME}" -p"${RDS_PASSWORD}" -h "${RDS_HOSTNAME}" -P "${RDS_PO
 echo "Creating docker_varnish_hosts table if not exist."
 mysql -u "${RDS_USERNAME}" -p"${RDS_PASSWORD}" -h "${RDS_HOSTNAME}" -P "${RDS_PORT}" "${RDS_DB_NAME}" -e 'CREATE TABLE IF NOT EXISTS `docker_varnish_hosts` ( `hostname` varchar(700) NOT NULL, `last_checked` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`hostname`), UNIQUE KEY `hostname` (`hostname`) )'
 
+
+echo "DI Compliation"
+/src/bin/magento setup:di:compile 
+
 echo "Setup upgrade"
 /src/bin/magento setup:upgrade
+
+echo "Clearing cache"
+/src/bin/magento cache:clean
+/src/bin/magento cache:flush
+/src/bin/magento setup:di:compile 
+
 
 echo "Enabling S3 assets module"
 /src/bin/magento module:enable Arkade_S3
@@ -151,13 +161,6 @@ echo "Enabling S3 assets module"
     --secret-key "${MEDIA_S3_SECRET_KEY}" \
     --bucket "${MEDIA_S3_BUCKET}" \
     --region "${MEDIA_S3_REGION}"
-
-echo "Clearing cache"
-/src/bin/magento cache:clean
-/src/bin/magento cache:flush
-
-echo "DI Compliation"
-/src/bin/magento setup:di:compile 
 
 echo "Running full reindex"
 /src/bin/magento indexer:reindex
