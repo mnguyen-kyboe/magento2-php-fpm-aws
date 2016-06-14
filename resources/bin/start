@@ -150,7 +150,13 @@ echo "Enabling S3 assets module"
 
 echo "Running magento replace env vars"
 chmod +x /usr/local/bin/magento-replace-env-vars
-/usr/local/bin/magento-replace-env-vars
+APP_DIR=/src MEDIA_S3_ACCESS_KEY="${MEDIA_S3_ACCESS_KEY}"  MEDIA_S3_SECRET_KEY="${MEDIA_S3_SECRET_KEY}" \
+ MEDIA_S3_BUCKET="${MEDIA_S3_BUCKET}"  MEDIA_S3_REGION="${MEDIA_S3_REGION}" \
+ ELASTICACHE_CONNECTION="${ELASTICACHE_CONNECTION}" \
+ RDS_USERNAME="${RDS_USERNAME}" RDS_PASSWORD="${RDS_PASSWORD}" RDS_HOSTNAME="${RDS_HOSTNAME}" RDS_PORT="${RDS_PORT}" RDS_DB_NAME="${RDS_DB_NAME}" \
+ MEDIA_S3_WEBSITE_URL="${MEDIA_S3_WEBSITE_URL}" MEDIA_S3_SECURE_URL="${MEDIA_S3_SECURE_URL}" \
+ AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
+ /usr/local/bin/magento-replace-env-vars
 
 echo "Setup upgrade"
 /src/bin/magento setup:upgrade
