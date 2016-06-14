@@ -39,6 +39,8 @@ $RDS_HOSTNAME = getenv('RDS_HOSTNAME');
 $RDS_PORT = getenv('RDS_PORT');
 $RDS_DB_NAME = getenv('RDS_DB_NAME');
 
+echo "From replace envs: $MEDIA_S3_SECRET_KEY , $MEDIA_S3_ACCESS_KEY, RDS $RDS_USERNAME";
+
 
 $MEDIA_S3_WEBSITE_URL = getenv('MEDIA_S3_WEBSITE_URL') ? getenv('MEDIA_S3_WEBSITE_URL') : null;
 if (!$MEDIA_S3_WEBSITE_URL && $Outputs['MediaWebsiteURL']) {

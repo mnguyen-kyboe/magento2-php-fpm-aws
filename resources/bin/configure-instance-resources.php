@@ -37,11 +37,6 @@ $Outputs = array(
     'MediaSecretKey' => null
 );
 
-if (!getenv('AWS_ACCESS_KEY_ID') || !getenv('AWS_SECRET_ACCESS_KEY')) {
-    echo "Skipping automatic configuration of resources.";
-    return $Outputs;
-}
-
 
 // curl http://169.254.169.254/latest/meta-data/instance-id
 // aws ec2 describe-instances --instance-ids i-b40a053c --region eu-west-1
