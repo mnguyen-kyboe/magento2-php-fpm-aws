@@ -174,28 +174,36 @@ This is sample configuration file, it includes and configures:
       "memory": 1024,
       "environment": [
         {
-          "name": "GITHUB_OAUTH_TOKEN",
+          "name": "AWS_ACCESS_KEY_ID",
           "value": "xxxxx"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "value": "yyyyyy"
+        },
+        {
+          "name": "GITHUB_OAUTH_TOKEN",
+          "value": "zzzzz"
         },
         {
           "name": "MAGENTO_REP_USERNAME",
-          "value": "xxxxx"
+          "value": "aaaa"
         },
         {
           "name": "MAGENTO_REP_PASSWORD",
-          "value": "xxxxx"
+          "value": "bbbbb"
         },
         {
           "name": "SSMTP_ROOT",
-          "value": "xxxxx@gmail.com"
+          "value": "ccccc@gmail.com"
         },
         {
           "name": "SSMTP_AUTHUSER",
-          "value": "xxxx@gmail.com"
+          "value": "ddddd@gmail.com"
         },
         {
           "name": "SSMTP_AUTHPASS",
-          "value": "xxxxxxx"
+          "value": "eeeee"
         }
       ],
       "mountPoints": [
@@ -315,8 +323,8 @@ Note: these variables must be configured manually. AWS Beanstalk does not do thi
 
 We use the [S3 extension](https://github.com/arkadedigital/magento2-s3) to save media files. these variables should be configured after you add a S3 resource manually.
 
-- `MEDIA_S3_ACCESS_KEY`: (default ``)
-- `MEDIA_S3_SECRET_KEY`: (default ``)
+- `MEDIA_S3_ACCESS_KEY`: (default ``) Falls back to AWS_ACCESS_KEY_ID
+- `MEDIA_S3_SECRET_KEY`: (default ``) Falls back to AWS_SECRET_ACCESS_KEY
 - `MEDIA_S3_BUCKET`: (default ``)
 - `MEDIA_S3_REGION`: (default `eu-west-1`)
 

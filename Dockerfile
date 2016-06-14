@@ -84,6 +84,10 @@ ENV GITHUB_OAUTH_TOKEN ""
 ENV MAGENTO_REP_USERNAME ""
 ENV MAGENTO_REP_PASSWORD ""
 
+ENV AWS_ACCESS_KEY_ID ""
+ENV AWS_SECRET_ACCESS_KEY ""
+ENV AWS_DEFAULT_REGION "eu-west-1"
+
 
 COPY resources/conf/php.ini /usr/local/etc/php/
 COPY resources/conf/php-fpm.conf /usr/local/etc/

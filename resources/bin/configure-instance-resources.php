@@ -35,6 +35,12 @@ $Outputs = array(
     'MediaBucketName' => null
 );
 
+if (!getenv('AWS_ACCESS_KEY_ID') || !getenv('AWS_SECRET_ACCESS_KEY')) {
+    echo "Skipping automatic configuration of resources.";
+    return $Outputs;
+}
+
+
 // curl http://169.254.169.254/latest/meta-data/instance-id
 // aws ec2 describe-instances --instance-ids i-b40a053c --region eu-west-1
 
@@ -42,6 +48,7 @@ $ec2InstanceId = file_get_contents('http://169.254.169.254/latest/meta-data/inst
 $ec2Region = file_get_contents('http://169.254.169.254/latest/meta-data/region');
 // Allow to fail...
 if ($ec2InstanceId) {
+    echo "Describing instances for $ec2InstanceId\n";
     // We need to find the stack name  of the beanstalk environment. This is located on the ec2 info.
     $shell = shell_exec("aws ec2 describe-instances --instance-ids $ec2InstanceId --region $ec2Region");
     $json = json_decode($shell, true);
@@ -54,6 +61,7 @@ if ($ec2InstanceId) {
 
                 // Then we list all the outputs of the stack ( we describe this in resources ).
 
+                echo "Describing stack $stackName\n";
                 $shell = shell_exec("aws cloudformation describe-stacks --region=$ec2Region --stack-name $stackName");
                 $json = json_decode($shell, true);
                 if ($json) {
