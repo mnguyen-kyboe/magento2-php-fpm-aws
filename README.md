@@ -196,14 +196,6 @@ This is sample configuration file, it includes and configures:
         {
           "name": "SSMTP_AUTHPASS",
           "value": "xxxxxxx"
-        },
-        {
-            "name": "WEBSITE_UNSECURE_URL",
-            "value": "http://my-env.xxxxxxx.eu-west-1.elasticbeanstalk.com"
-        },
-        {
-            "name": "WEBSITE_SECURE_URL",
-            "value": "https://my-env.xxxxxxx.eu-west-1.elasticbeanstalk.com"
         }
       ],
       "mountPoints": [
@@ -305,8 +297,8 @@ The following variables may be set to control the PHP environment:
 - `MAGENTO_ADMIN_PASSWORD`: (default `Admin321123`)
 - `MAGENTO_USE_REWRITES`: (default `1`)
 
-- `WEBSITE_UNSECURE_URL`: (default ``) URL to aws beanstalk endpoint or the domain name if you have assigned a domain. Note that you first get a domain after the first environment has been created in AWS Beanstalk.
-- `WEBSITE_SECURE_URL`: (default ``) URL to aws beanstalk endpoint or the domain name if you have assigned a domain.
+- `MEDIA_S3_WEBSITE_URL`: (default ``) Url to media storage (s3). 
+- `MEDIA_S3_SECURE_URL`: (default ``) Url to media storage (s3 secure). 
 
 
 

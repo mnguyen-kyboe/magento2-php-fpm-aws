@@ -11,7 +11,11 @@ RUN apt-get update \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpng12-dev \
-    libxslt1-dev
+    libxslt1-dev \
+    python-pip
+
+RUN pip install awscli
+
 
 RUN docker-php-ext-configure \
   gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
@@ -36,8 +40,7 @@ ENV PHP_PM_MIN_SPARE_SERVERS 2
 ENV PHP_PM_MAX_SPARE_SERVERS 6
 ENV APP_MAGE_MODE production
 
-ENV WEBSITE_UNSECURE_URL "http://localhost"
-ENV WEBSITE_SECURE_URL "https://localhost"
+
 ENV PHP_SENDMAIL_PATH /usr/sbin/ssmtp -t
 ENV RDS_HOSTNAME ""
 ENV RDS_DB_NAME ebdb
@@ -57,6 +60,9 @@ ENV MEDIA_S3_ACCESS_KEY ""
 ENV MEDIA_S3_SECRET_KEY ""
 ENV MEDIA_S3_BUCKET ""
 ENV MEDIA_S3_REGION "eu-west-1"
+ENV MEDIA_S3_SECURE_URL ""
+ENV MEDIA_S3_WEBSITE_URL ""
+
 ENV ELASTICACHE_CONNECTION ""
 
 
