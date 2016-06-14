@@ -32,7 +32,9 @@ $Outputs = array(
     'MediaWebsiteURL' => null,
     'MediaSecureURL' => null,
     'MediaDomainName' => null,
-    'MediaBucketName' => null
+    'MediaBucketName' => null,
+    'MediaAccessKey' => null,
+    'MediaSecretKey' => null
 );
 
 if (!getenv('AWS_ACCESS_KEY_ID') || !getenv('AWS_SECRET_ACCESS_KEY')) {
