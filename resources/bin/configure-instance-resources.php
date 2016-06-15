@@ -41,10 +41,12 @@ $Outputs = array(
 // curl http://169.254.169.254/latest/meta-data/instance-id
 // aws ec2 describe-instances --instance-ids i-b40a053c --region eu-west-1
 
-$ec2InstanceId = file_get_contents('http://169.254.169.254/latest/meta-data/instance-id');
-$ec2Region = file_get_contents('http://169.254.169.254/latest/meta-data/region');
+$ec2IdentityDocument = file_get_contents('http://169.254.169.254/latest/dynamic/instance-identity/document');
+$ec2IdentityDocumentJson = json_decode($ec2IdentityDocument, true);
+$ec2Region = $ec2IdentityDocumentJson['region'];
+$ec2InstanceId = $ec2IdentityDocumentJson['instanceId'];
 // Allow to fail...
-if ($ec2InstanceId) {
+if ($ec2InstanceId && $ec2Region) {
     echo "Describing instances for $ec2InstanceId\n";
     // We need to find the stack name  of the beanstalk environment. This is located on the ec2 info.
     $shell = shell_exec("aws ec2 describe-instances --instance-ids $ec2InstanceId --region $ec2Region");
@@ -75,14 +77,26 @@ if ($ec2InstanceId) {
                             $Outputs['MediaBucketName'] = $exp[0];
                         }
                     }
+                    echo "Stack outputs found:\n";
+                    print_r($Outputs);
+
+                    return $Outputs;
+
+                } else {
+                    echo "configure-instance-resources:ERROR: Could not get json from aws cloudformation describe-stacks \n";
                 }
+
             }
         }
+    } else {
+        echo "configure-instance-resources:ERROR: Could not get json from aws ec2 describe-instances \n";
     }
 
 
     // now we can use configuration
 
+} else {
+    echo "configure-instance-resources:ERROR: Could not get region:$ec2Region instance-id:$ec2InstanceId.\n";
 }
 
 
