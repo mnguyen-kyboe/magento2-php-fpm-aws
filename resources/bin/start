@@ -105,9 +105,9 @@ fi
 su -c "/usr/local/bin/setup-config" -s /bin/sh www-data
 
 
-if [ -d /src/bin ]; then
+if [ -d /src/bin ] && [ ! -f /src/bin/magento-php ]; then
+  mv /src/bin/magento /src/bin/magento-php
   cp /usr/local/bin/magento /src/bin/
-  cp /usr/local/bin/magento-php /src/bin/
 fi
 
 
