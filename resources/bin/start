@@ -168,7 +168,6 @@ echo "Setup upgrade"
 echo "Clearing cache"
 /src/bin/magento cache:clean
 /src/bin/magento cache:flush
-/src/bin/magento setup:di:compile 
 
 
 
