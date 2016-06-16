@@ -68,10 +68,6 @@ $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
 $dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".getenv('WEBSITE_SECURE_URL')."', 'web/secure/base_url');");
 $dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".getenv('WEBSITE_UNSECURE_URL')."', 'web/unsecure/base_url');");
 
-echo "Setting s3 access credentails\n";
-
-passthru("/src/bin/magento s3:config:set --access-key-id \"$MEDIA_S3_ACCESS_KEY\" --secret-key \"$MEDIA_S3_SECRET_KEY\" --bucket \"$MEDIA_S3_BUCKET\" --region \"$MEDIA_S3_REGION\"");
-
 
 $file = getenv('APP_DIR') . '/app/etc/env.php';
 $config = require($file);
@@ -100,3 +96,9 @@ echo "Overwriting env file with respective cache settings\n";
 
 $finished = '<?php return ' . var_export($config, true) . ';';
 file_put_contents($file, $finished);
+
+
+echo "Setting s3 access credentails\n";
+
+echo shell_exec("/src/bin/magento s3:config:set --access-key-id \"$MEDIA_S3_ACCESS_KEY\" --secret-key \"$MEDIA_S3_SECRET_KEY\" --bucket \"$MEDIA_S3_BUCKET\" --region \"$MEDIA_S3_REGION\"");
+
