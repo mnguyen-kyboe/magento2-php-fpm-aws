@@ -39,7 +39,6 @@ $RDS_HOSTNAME = getenv('RDS_HOSTNAME');
 $RDS_PORT = getenv('RDS_PORT');
 $RDS_DB_NAME = getenv('RDS_DB_NAME');
 
-echo "From replace envs: $MEDIA_S3_SECRET_KEY , $MEDIA_S3_ACCESS_KEY, RDS $RDS_USERNAME";
 
 
 $MEDIA_S3_WEBSITE_URL = getenv('MEDIA_S3_WEBSITE_URL') ? getenv('MEDIA_S3_WEBSITE_URL') : null;
@@ -68,6 +67,8 @@ $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
 $dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".getenv('WEBSITE_SECURE_URL')."', 'web/secure/base_url');");
 $dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".getenv('WEBSITE_UNSECURE_URL')."', 'web/unsecure/base_url');");
 
+echo "Setting web/secure/base_url to " . getenv('WEBSITE_SECURE_URL') . "\n";
+echo "Setting web/unsecure/base_url to " . getenv('WEBSITE_UNSECURE_URL') . "\n";
 
 $file = getenv('APP_DIR') . '/app/etc/env.php';
 $config = require($file);
