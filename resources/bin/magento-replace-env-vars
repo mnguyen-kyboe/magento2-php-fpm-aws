@@ -63,9 +63,12 @@ $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
                     ('1',  'dev/css/merge_files'), ('0', 'dev/css/minify_files'),
                     ('0', 'dev/template/minify_html')");
 
+// This only happens on first deploy since we use INSERT IGNORE INTO..
 // Set base url to empty if not set yet.. Because magento uses "localhost" as default and that does not work on AWS since beanstalk generates a URL.
-$dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".getenv('WEBSITE_SECURE_URL')."', 'web/secure/base_url');");
-$dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".getenv('WEBSITE_UNSECURE_URL')."', 'web/unsecure/base_url');");
+$host = $Outputs['BeanstalkCNAME'] ? 'https://'.$Outputs['BeanstalkCNAME'] . '/' : getenv('WEBSITE_SECURE_URL');
+$dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".$host."', 'web/secure/base_url');");
+$host = $Outputs['BeanstalkCNAME'] ? 'http://'.$Outputs['BeanstalkCNAME'] . '/' : getenv('WEBSITE_UNSECURE_URL');
+$dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".$host."', 'web/unsecure/base_url');");
 
 echo "Setting web/secure/base_url to " . getenv('WEBSITE_SECURE_URL') . "\n";
 echo "Setting web/unsecure/base_url to " . getenv('WEBSITE_UNSECURE_URL') . "\n";
