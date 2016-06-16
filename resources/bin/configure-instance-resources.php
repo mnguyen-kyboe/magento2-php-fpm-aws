@@ -14,7 +14,8 @@
     {
       "Action": [
         "ec2:Describe*",
-        "cloudformation:Describe*"
+        "cloudformation:Describe*",
+        "beanstalk:Describe*"
       ],
       "Effect": "Allow",
       "Resource": "*"
@@ -34,7 +35,9 @@ $Outputs = array(
     'MediaDomainName' => null,
     'MediaBucketName' => null,
     'MediaAccessKey' => null,
-    'MediaSecretKey' => null
+    'MediaSecretKey' => null,
+    
+    'BeanstalkCNAME' => null
 );
 
 
@@ -80,12 +83,24 @@ if ($ec2InstanceId && $ec2Region) {
                     echo "Stack outputs found:\n";
                     print_r($Outputs);
 
-                    return $Outputs;
 
                 } else {
                     echo "configure-instance-resources:ERROR: Could not get json from aws cloudformation describe-stacks \n";
                 }
 
+            } else if ($tag['Key'] === 'elasticbeanstalk:environment-name') {
+                $environmentName = $tag['Value'];
+                
+                echo "Describing beanstalk $environmentName\n";
+                $shell = shell_exec("aws elasticbeanstalk describe-environments --environment-name $stackName --region=$ec2Region");
+                $json = json_decode($shell, true);
+                if ($json) {
+                    $environment = $json['Environments'][0];
+                    $Outputs['BeanstalkCNAME'] = $environment['CNAME'];
+                    echo "Beanstalk CNAME found {$Outputs['BeanstalkCNAME']}\n";
+                } else {
+                    echo "configure-instance-resources:ERROR: Could not get json from aws beanstalk describe-environments \n";
+                }
             }
         }
     } else {
