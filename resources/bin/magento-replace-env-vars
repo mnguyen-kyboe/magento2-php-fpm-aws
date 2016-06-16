@@ -54,7 +54,7 @@ if (!$MEDIA_S3_SECURE_URL && $Outputs['MediaSecureURL']) {
     echo "Automatically configuring secure media website url with $MEDIA_S3_SECURE_URL\n";
 }
 
-echo "Setting default settings";
+echo "Setting default database settings\n";
 
 $dbh = new PDO("mysql:host={$RDS_HOSTNAME};port={$RDS_PORT};dbname={$RDS_DB_NAME}", $RDS_USERNAME, $RDS_PASSWORD);
 
@@ -68,6 +68,7 @@ $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
 $dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".getenv('WEBSITE_SECURE_URL')."', 'web/secure/base_url');");
 $dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".getenv('WEBSITE_UNSECURE_URL')."', 'web/unsecure/base_url');");
 
+echo "Setting s3 access credentails\n";
 
 passthru("/src/bin/magento s3:config:set --access-key-id \"$MEDIA_S3_ACCESS_KEY\" --secret-key \"$MEDIA_S3_SECRET_KEY\" --bucket \"$MEDIA_S3_BUCKET\" --region \"$MEDIA_S3_REGION\"");
 
@@ -95,6 +96,7 @@ if ($ELASTICACHE_CONNECTION) {
     );
 }
 
+echo "Overwriting env file with respective cache settings\n";
 
 $finished = '<?php return ' . var_export($config, true) . ';';
 file_put_contents($file, $finished);
