@@ -92,7 +92,7 @@ if ($ec2InstanceId && $ec2Region) {
                 $environmentName = $tag['Value'];
                 
                 echo "Describing beanstalk $environmentName\n";
-                $shell = shell_exec("aws elasticbeanstalk describe-environments --environment-name $stackName --region=$ec2Region");
+                $shell = shell_exec("aws elasticbeanstalk describe-environments --environment-name $environmentName --region=$ec2Region");
                 $json = json_decode($shell, true);
                 if ($json) {
                     $environment = $json['Environments'][0];
