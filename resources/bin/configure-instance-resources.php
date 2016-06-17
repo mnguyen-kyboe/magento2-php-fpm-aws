@@ -15,7 +15,7 @@
       "Action": [
         "ec2:Describe*",
         "cloudformation:Describe*",
-        "beanstalk:Describe*"
+        "elasticbeanstalk:Describe*"
       ],
       "Effect": "Allow",
       "Resource": "*"
@@ -96,8 +96,12 @@ if ($ec2InstanceId && $ec2Region) {
                 $json = json_decode($shell, true);
                 if ($json) {
                     $environment = $json['Environments'][0];
-                    $Outputs['BeanstalkCNAME'] = $environment['CNAME'];
-                    echo "Beanstalk CNAME found {$Outputs['BeanstalkCNAME']}\n";
+                    if ($environment && $environment['CNAME']) {
+                      $Outputs['BeanstalkCNAME'] = $environment['CNAME'];
+                      echo "Beanstalk CNAME found {$Outputs['BeanstalkCNAME']}\n";
+                    } else {
+                      echo "configure-instance-resources:ERROR: Could not get CNAME from aws beanstalk describe-environments\n";
+                    }
                 } else {
                     echo "configure-instance-resources:ERROR: Could not get json from aws beanstalk describe-environments \n";
                 }
