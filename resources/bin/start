@@ -115,6 +115,9 @@ if [ -d /src/bin ] && [ ! -f /src/bin/magento-php ]; then
 fi
 
 
+chown www-data:www-data /usr/local/bin/magento-varnish-cron
+chmod +x /usr/local/bin/magento-varnish-cron
+
 
 chown -R www-data:www-data /src
 chmod +x /src/bin/magento

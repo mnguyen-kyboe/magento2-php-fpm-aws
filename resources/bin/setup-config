@@ -2,7 +2,7 @@
 WWW_DIR=/src
 
 echo "*/1 * * * * /usr/local/bin/php $WWW_DIR/update/cron.php" | crontab - \
-  && (crontab -l ; echo "*/1 * * * * /usr/local/bin/magento-varnish-cron >> /src/var/log/aws-magento-varnish.cron.log") | crontab - \
+  && (crontab -l ; echo "*/1 * * * * /usr/local/bin/magento-varnish-cron") | crontab - \
   && (crontab -l ; echo "*/1 * * * * /usr/local/bin/php $WWW_DIR/bin/magento-php cron:run") | crontab - \
   && (crontab -l ; echo "*/1 * * * * /usr/local/bin/php $WWW_DIR/bin/magento-php setup:cron:run") | crontab -
 
