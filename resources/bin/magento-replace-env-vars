@@ -57,18 +57,38 @@ echo "Setting default database settings\n";
 
 $dbh = new PDO("mysql:host={$RDS_HOSTNAME};port={$RDS_PORT};dbname={$RDS_DB_NAME}", $RDS_USERNAME, $RDS_PASSWORD);
 
-$dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
-                    ('$MEDIA_S3_SECURE_URL', 'web/secure/base_media_url'), ('$MEDIA_S3_WEBSITE_URL', 'web/unsecure/base_media_url')");
 
 // This only happens on first deploy since we use INSERT IGNORE INTO..
 // Set base url to empty if not set yet.. Because magento uses "localhost" as default and that does not work on AWS since beanstalk generates a URL.
 $host = $Outputs['BeanstalkCNAME'] ? 'https://'.$Outputs['BeanstalkCNAME'] . '/' : getenv('WEBSITE_SECURE_URL');
+echo "Setting web/secure/base_url to $host\n";
 $dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".$host."', 'web/secure/base_url');");
+
+
 $host = $Outputs['BeanstalkCNAME'] ? 'http://'.$Outputs['BeanstalkCNAME'] . '/' : getenv('WEBSITE_UNSECURE_URL');
+echo "Setting web/secure/base_url to $host\n";
 $dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".$host."', 'web/unsecure/base_url');");
 
-echo "Setting web/secure/base_url to " . getenv('WEBSITE_SECURE_URL') . "\n";
-echo "Setting web/unsecure/base_url to " . getenv('WEBSITE_UNSECURE_URL') . "\n";
+// If we have configured a CDN for media we use it , else we use s3 directly.
+if ($Outputs['MediaCDNDomainName']) {
+    $http = 'http://'.$Outputs['MediaCDNDomainName'] . '/';
+    $https = 'https://'.$Outputs['MediaCDNDomainName'] . '/';
+    $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
+                    ('$https', 'web/secure/base_media_url'), ('$http', 'web/unsecure/base_media_url')");
+} else {
+    $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
+                    ('$MEDIA_S3_SECURE_URL', 'web/secure/base_media_url'), ('$MEDIA_S3_WEBSITE_URL', 'web/unsecure/base_media_url')");
+}
+
+
+// If we have configured a CDN for static view files, we use it, else load them directly from the EC2's.
+if ($Outputs['SiteCDNDomainName']) {
+    $http = 'http://'.$Outputs['SiteCDNDomainName'] . '/static/';
+    $https = 'https://'.$Outputs['SiteCDNDomainName'] . '/static/';
+    $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
+                    ('$https', 'web/secure/base_static_url'), ('$http', 'web/unsecure/base_static_url')");
+}
+
 
 $file = getenv('APP_DIR') . '/app/etc/env.php';
 $config = require($file);

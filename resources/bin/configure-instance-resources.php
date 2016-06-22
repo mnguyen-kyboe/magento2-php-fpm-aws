@@ -37,7 +37,10 @@ $Outputs = array(
     'MediaAccessKey' => null,
     'MediaSecretKey' => null,
     
-    'BeanstalkCNAME' => null
+    'BeanstalkCNAME' => null,
+
+    'MediaCDNDomainName' => null,
+    'SiteCDNDomainName' => null
 );
 
 
