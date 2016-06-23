@@ -117,11 +117,16 @@ fi
 
 chown www-data:www-data /usr/local/bin/magento-varnish-cron
 chmod +x /usr/local/bin/magento-varnish-cron
+chmod +x /usr/local/bin/clear-elasticache
 
 
 chown -R www-data:www-data /src
 chmod +x /src/bin/magento
 chmod +x /src/bin/magento-php
+
+
+# clear elasticache so that magento does not use old generated code on the next commands.
+ELASTICACHE_CONNECTION="${ELASTICACHE_CONNECTION}"  /usr/local/bin/clear-elasticache
 
 
 echo "Running magento setup:install"

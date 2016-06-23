@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+$Outputs = require('configure-instance-resources.php');
+
+$ELASTICACHE_CONNECTION = getenv('ELASTICACHE_CONNECTION');
+
+if (!$ELASTICACHE_CONNECTION && $Outputs['ElastiCacheAddress'] && $Outputs['ElastiCachePort']) {
+    $ELASTICACHE_CONNECTION = $Outputs['ElastiCacheAddress'] . ':' . $Outputs['ElastiCachePort'];
+    echo "Clear-elasticache: Automatically configuring elasticache with $ELASTICACHE_CONNECTION\n";
+}
+if ($ELASTICACHE_CONNECTION) {
+    list($host, $port) = explode(':', $ELASTICACHE_CONNECTION);
+    $mc = new Memcached();
+    $mc->addServer($host, $port);
+    if ( $mc->flush()) {
+        echo "Clear-elasticache: successfully cleared elasticache server using $host:$port.\n";
+    } else {
+        echo "Clear-elasticache: ERROR: could not clear elasticache server using $host:$port connection.\n";
+    }
+} else {
+    echo "Clear-elasticache: Skipping clearing elasticache ( not configured ELASTICACHE_CONNECTION ).\n";
+}
