@@ -153,8 +153,6 @@ echo "Creating docker_varnish_hosts table if not exist."
 mysql -u "${RDS_USERNAME}" -p"${RDS_PASSWORD}" -h "${RDS_HOSTNAME}" -P "${RDS_PORT}" "${RDS_DB_NAME}" -e 'CREATE TABLE IF NOT EXISTS `docker_varnish_hosts` ( `hostname` varchar(700) NOT NULL, `last_checked` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`hostname`), UNIQUE KEY `hostname` (`hostname`) )'
 
 
-echo "DI Compliation"
-/src/bin/magento setup:di:compile 
 
 echo "Enabling S3 assets module"
 /src/bin/magento module:enable Arkade_S3
@@ -172,7 +170,15 @@ APP_DIR=/src MEDIA_S3_ACCESS_KEY="${MEDIA_S3_ACCESS_KEY}"  MEDIA_S3_SECRET_KEY="
  /usr/local/bin/magento-replace-env-vars
 
 echo "Setup upgrade"
+# ref. https://github.com/magento/magento2/issues/4795 - remove var/di ..
+rm -rf var/di var/genertion var/cache
 /src/bin/magento setup:upgrade
+
+# compile after setup upgrade.
+echo "DI Compliation"
+rm -rf var/di var/genertion var/cache
+/src/bin/magento setup:di:compile 
+
 
 echo "Clearing cache"
 /src/bin/magento cache:clean
