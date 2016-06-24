@@ -426,22 +426,55 @@ touch /home/composer/auth.json
 
 # Health status
 
+
+Add to `.ebextensions/autoscaling.config`:
+
+```
+# By default AWS Beanstalk checks for EC2 Status when it comes to replacing EC2 instances
+# Obviously this is no good, we want to check the actual magento2 application's status instead.
+# Allow the magento 2 installation to have 40 minutes of unhealthy status
+# After this, remove the EC2 from the stack and create a new EC2.
+Resources:
+  AWSEBAutoScalingGroup:
+    Type: "AWS::AutoScaling::AutoScalingGroup"
+    Properties:
+      HealthCheckType: ELB
+      HealthCheckGracePeriod: 2400
+
+```
+
+
+
 Add this to magento nginx config
 
 ```
+
     location /aws/ {
         root /var/docker-resources/web/;
 
         location ~ \.php$ {
-            fastcgi_pass   fastcgi_backend;
-            fastcgi_index  index.php;
-            include        fastcgi_params;
-        }
+            try_files $uri =404;
+            fastcgi_pass fastcgi_backend;
+            fastcgi_index index.php;
+            include /etc/nginx/fastcgi_params;
+       }
+
     }
+
+
 
 ```
 
-Setup application health check url to `/aws/health-status.php`
+Add to `.ebextensions/options.config`:
+
+```
+option_settings:
+    "aws:elasticbeanstalk:command":
+        Timeout: 1200
+    "aws:autoscaling:updatepolicy:rollingupdate":
+        RollingUpdateType: Health
+
+```
 
 
 # One-off containers
