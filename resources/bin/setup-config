@@ -1,8 +1,8 @@
 #!/bin/bash
 WWW_DIR=/src
 
-echo "*/1 * * * * /usr/local/bin/php $WWW_DIR/update/cron.php" | crontab - \
-  && (crontab -l ; echo "*/1 * * * * /usr/local/bin/magento-varnish-cron") | crontab - \
-  && (crontab -l ; echo "*/1 * * * * /usr/local/bin/php $WWW_DIR/bin/magento-php cron:run") | crontab - \
-  && (crontab -l ; echo "*/1 * * * * /usr/local/bin/php $WWW_DIR/bin/magento-php setup:cron:run") | crontab -
+echo "* * * * * /usr/local/bin/magento-varnish-cron" | crontab - \
+  && (crontab -l ; echo "* * * * * /usr/local/bin/php $WWW_DIR/bin/magento-php cron:run | grep -v 'Ran jobs by schedule' >> /var/www/magento2/var/log/magento.cron.log") | crontab - \
+  && (crontab -l ; echo "* * * * * /usr/local/bin/php $WWW_DIR/update/cron.php >> /var/www/magento2/var/log/update.cron.log") | crontab - \
+  && (crontab -l ; echo "* * * * * /usr/local/bin/php $WWW_DIR/bin/magento-php setup:cron:run >> /var/www/magento2/var/log/setup.cron.log") | crontab -
 
