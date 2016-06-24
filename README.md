@@ -424,6 +424,26 @@ touch /home/composer/auth.json
 ```
 
 
+# Health status
+
+Add this to magento nginx config
+
+```
+    location /aws/ {
+        root /var/docker-resources/web/;
+
+        location ~ \.php$ {
+            fastcgi_pass   fastcgi_backend;
+            fastcgi_index  index.php;
+            include        fastcgi_params;
+        }
+    }
+
+```
+
+Setup application health check url to `/aws/health-status.php`
+
+
 # One-off containers
 
 This image can run one-off PHP commands, such as:

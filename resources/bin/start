@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+# Tell health-status.php that we are currently running.
+chown -R www-data:www-data /var/docker-resources/web/
+su -c "touch /tmp/magento-start-in-progress" -s /bin/sh www-data
+
+
 [ ! -z "${PHP_MEMORY_LIMIT}" ]         && sed -i "s/PHP_MEMORY_LIMIT/${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/php.ini
 [ ! -z "${PHP_SENDMAIL_PATH}" ]        && sed -i "s#PHP_SENDMAIL_PATH#${PHP_SENDMAIL_PATH}#" /usr/local/etc/php/php.ini
 [ ! -z "${PHP_PORT}" ]                 && sed -i "s/PHP_PORT/${PHP_PORT}/" /usr/local/etc/php-fpm.conf
@@ -106,6 +111,8 @@ if [ -z "${AVOID_COMPOSER}" ]; then
     fi
 fi
 
+
+
 su -c "/usr/local/bin/setup-config" -s /bin/sh www-data
 
 
@@ -201,14 +208,18 @@ chown -R www-data:www-data /src
 chmod -R 0777 /src
 
 
+# In the end, remove the magento start in progress so health-status can be OK.
+rm /tmp/magento-start-in-progress
+
 # Only start php-fpm if successful ...
 if [ -f /src/app/etc/env.php ]; then
    echo "Starting the cron service"
    /usr/sbin/cron
 
    echo "Starting php-fpm"
-    /usr/local/sbin/php-fpm
+   /usr/local/sbin/php-fpm
+
 else
     echo "ERROR: could not find /src/composer.lock in magento php container.... Did you mount magento root dir as a volume to /src? You should..."
 fi
-v
+
