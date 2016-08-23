@@ -1,7 +1,6 @@
 <?php
 // Configures the generated resources with environment variables
 // Such as:
-// - S3 for media
 // - Elasticache
 
 
@@ -29,13 +28,6 @@ $Outputs = array(
     'ElastiCachePort' => null,
     'ElastiCacheAddress' => null,
 
-
-    'MediaWebsiteURL' => null,
-    'MediaSecureURL' => null,
-    'MediaDomainName' => null,
-    'MediaBucketName' => null,
-    'MediaAccessKey' => null,
-    'MediaSecretKey' => null,
     
     'BeanstalkCNAME' => null,
 
@@ -74,14 +66,8 @@ if ($ec2InstanceId && $ec2Region) {
                     // Keys like:
                     // ElastiCachePort
                     // ElastiCacheAddress
-                    // MediaWebsiteURL
                     foreach ($stack['Outputs'] as $output) {
                         $Outputs[$output['OutputKey']] = $output['OutputValue'];
-
-                        if ($output['OutputKey'] == 'MediaDomainName') {
-                            $exp = explode('.', $output['OutputValue']);
-                            $Outputs['MediaBucketName'] = $exp[0];
-                        }
                     }
                     echo "Stack outputs found:\n";
                     print_r($Outputs);

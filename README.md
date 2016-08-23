@@ -27,7 +27,7 @@ This image is configured to run with the following amazon services:
 - Elastic Beanstalk
 - Elasticache
 - RDS
-- S3 (for media files)
+- Magento Database Media and Cloudfront for media files
 
 
 It's supposed to be used with Amazon Beanstalk Docker Environments.
@@ -305,8 +305,6 @@ The following variables may be set to control the PHP environment:
 - `MAGENTO_ADMIN_PASSWORD`: (default `Admin321123`)
 - `MAGENTO_USE_REWRITES`: (default `1`)
 
-- `MEDIA_S3_WEBSITE_URL`: (default ``) Url to media storage (s3). 
-- `MEDIA_S3_SECURE_URL`: (default ``) Url to media storage (s3 secure). 
 
 
 
@@ -317,16 +315,6 @@ The connection to your elasticache. If not added filesystem will be used.
 - `ELASTICACHE_CONNECTION`: (default ``)
 
 
-### S3 for media
-
-Note: these variables must be configured manually. AWS Beanstalk does not do this for you like with RDS..
-
-We use the [S3 extension](https://github.com/arkadedigital/magento2-s3) to save media files. these variables should be configured after you add a S3 resource manually.
-
-- `MEDIA_S3_ACCESS_KEY`: (default ``) Falls back to AWS_ACCESS_KEY_ID
-- `MEDIA_S3_SECRET_KEY`: (default ``) Falls back to AWS_SECRET_ACCESS_KEY
-- `MEDIA_S3_BUCKET`: (default ``)
-- `MEDIA_S3_REGION`: (default `eu-west-1`)
 
 ### RDS
 

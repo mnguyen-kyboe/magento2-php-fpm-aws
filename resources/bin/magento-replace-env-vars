@@ -4,27 +4,6 @@
 $Outputs = require('configure-instance-resources.php');
 
 
-$MEDIA_S3_ACCESS_KEY = getenv('MEDIA_S3_ACCESS_KEY') ? getenv('MEDIA_S3_ACCESS_KEY') : null;
-
-if (!$MEDIA_S3_ACCESS_KEY && $Outputs['MediaAccessKey']) {
-    $MEDIA_S3_ACCESS_KEY = $Outputs['MediaAccessKey'];
-    echo "Automatically configuring Media ACCESS_KEY to $MEDIA_S3_ACCESS_KEY.\n";
-}
-
-$MEDIA_S3_SECRET_KEY = getenv('MEDIA_S3_SECRET_KEY') ? getenv('MEDIA_S3_SECRET_KEY') : null;
-
-if (!$MEDIA_S3_SECRET_KEY && $Outputs['MediaSecretKey']) {
-    $MEDIA_S3_SECRET_KEY = $Outputs['MediaSecretKey'];
-    echo "Automatically configuring Media SECRET_KEY to xxxxxx.\n";
-}
-
-$MEDIA_S3_BUCKET = getenv('MEDIA_S3_BUCKET') ? getenv('MEDIA_S3_BUCKET') : null;
-if (!$MEDIA_S3_BUCKET && $Outputs['MediaBucketName']) {
-    $MEDIA_S3_BUCKET = $Outputs['MediaBucketName'];
-    echo "Automatically configuring media bucket name to $MEDIA_S3_BUCKET.\n";
-}
-
-$MEDIA_S3_REGION = getenv('MEDIA_S3_REGION') ? getenv('MEDIA_S3_REGION') : 'eu-west-1';
 $ELASTICACHE_CONNECTION = getenv('ELASTICACHE_CONNECTION') ? getenv('ELASTICACHE_CONNECTION') : null;
 
 if (!$ELASTICACHE_CONNECTION && $Outputs['ElastiCacheAddress'] && $Outputs['ElastiCachePort']) {
@@ -40,18 +19,6 @@ $RDS_PORT = getenv('RDS_PORT');
 $RDS_DB_NAME = getenv('RDS_DB_NAME');
 
 
-
-$MEDIA_S3_WEBSITE_URL = getenv('MEDIA_S3_WEBSITE_URL') ? getenv('MEDIA_S3_WEBSITE_URL') : null;
-if (!$MEDIA_S3_WEBSITE_URL && $Outputs['MediaWebsiteURL']) {
-    $MEDIA_S3_WEBSITE_URL = $Outputs['MediaWebsiteURL'] . '/';
-    echo "Automatically configuring media website url with $MEDIA_S3_WEBSITE_URL\n";
-}
-
-$MEDIA_S3_SECURE_URL = getenv('MEDIA_S3_SECURE_URL') ? getenv('MEDIA_S3_SECURE_URL') : null;
-if (!$MEDIA_S3_SECURE_URL && $Outputs['MediaSecureURL']) {
-    $MEDIA_S3_SECURE_URL = $Outputs['MediaSecureURL'] . '/';
-    echo "Automatically configuring secure media website url with $MEDIA_S3_SECURE_URL\n";
-}
 
 echo "Setting default database settings\n";
 
@@ -69,15 +36,12 @@ $host = $Outputs['BeanstalkCNAME'] ? 'http://'.$Outputs['BeanstalkCNAME'] . '/' 
 echo "Setting web/secure/base_url to $host\n";
 $dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".$host."', 'web/unsecure/base_url');");
 
-// If we have configured a CDN for media we use it , else we use s3 directly.
+// If we have configured a CDN for media we use it
 if ($Outputs['MediaCDNDomainName']) {
     $http = 'http://'.$Outputs['MediaCDNDomainName'] . '/';
     $https = 'https://'.$Outputs['MediaCDNDomainName'] . '/';
     $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
                     ('$https', 'web/secure/base_media_url'), ('$http', 'web/unsecure/base_media_url')");
-} else {
-    $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
-                    ('$MEDIA_S3_SECURE_URL', 'web/secure/base_media_url'), ('$MEDIA_S3_WEBSITE_URL', 'web/unsecure/base_media_url')");
 }
 
 
@@ -119,7 +83,4 @@ $finished = '<?php return ' . var_export($config, true) . ';';
 file_put_contents($file, $finished);
 
 
-echo "Setting s3 access credentails\n";
-
-echo shell_exec("/src/bin/magento s3:config:set --access-key-id \"$MEDIA_S3_ACCESS_KEY\" --secret-key \"$MEDIA_S3_SECRET_KEY\" --bucket \"$MEDIA_S3_BUCKET\" --region \"$MEDIA_S3_REGION\"");
 
