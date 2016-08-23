@@ -38,8 +38,8 @@ $dbh->exec("INSERT IGNORE INTO `core_config_data` (value, path) VALUES ('".$host
 
 // If we have configured a CDN for media we use it
 if ($Outputs['MediaCDNDomainName']) {
-    $http = 'http://'.$Outputs['MediaCDNDomainName'] . '/';
-    $https = 'https://'.$Outputs['MediaCDNDomainName'] . '/';
+    $http = 'http://'.$Outputs['MediaCDNDomainName'] . '/media/';
+    $https = 'https://'.$Outputs['MediaCDNDomainName'] . '/media/';
     $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
                     ('$https', 'web/secure/base_media_url'), ('$http', 'web/unsecure/base_media_url')");
 }
