@@ -85,6 +85,8 @@ ENV AWS_ACCESS_KEY_ID ""
 ENV AWS_SECRET_ACCESS_KEY ""
 ENV AWS_DEFAULT_REGION "eu-west-1"
 
+ENV ENCRYPTION_KEY "ZZuj9e231j9jd9sZj8ej21j8dwjd21j"
+
 
 COPY resources/conf/php.ini /usr/local/etc/php/
 COPY resources/conf/php-fpm.conf /usr/local/etc/

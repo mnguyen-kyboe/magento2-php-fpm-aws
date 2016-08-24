@@ -326,6 +326,10 @@ The connection to your elasticache. If not added filesystem will be used.
 - `RDS_PASSWORD`: (default ``) 
 
 
+### Security 
+
+- `ENCRYPTION_KEY` (default `random str`) REMEMBER TO CHANGE THIS ENV VAR TO SOME RANDOM STRING. 
+
 ### SSMTP
 
 SSMTP is used for sending email, configure SSMTP to work with any mail provider. By default its configured to use Gmail.

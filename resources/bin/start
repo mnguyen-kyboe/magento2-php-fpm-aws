@@ -82,6 +82,10 @@ echo "SSMTP_FROM_LINE_OVERRIDE: ${SSMTP_FROM_LINE_OVERRIDE}"
 
 echo "AVOID_COMPOSER: ${AVOID_COMPOSER}"
 
+echo "ENCRYPTION_KEY: ${ENCRYPTION_KEY}"
+
+
+
 # Make sure this line comes last, otherwise find/replace will replace above vars
 [ ! -z "${PHP_PM}" ]                   && sed -i "s/PHP_PM/${PHP_PM}/" /usr/local/etc/php-fpm.conf
 
@@ -163,6 +167,7 @@ mysql -u "${RDS_USERNAME}" -p"${RDS_PASSWORD}" -h "${RDS_HOSTNAME}" -P "${RDS_PO
 echo "Running magento replace env vars"
 chmod +x /usr/local/bin/magento-replace-env-vars
 su -c 'APP_DIR=/src ELASTICACHE_CONNECTION="${ELASTICACHE_CONNECTION}" \
+        ENCRYPTION_KEY="${ENCRYPTION_KEY}" \
         WEBSITE_UNSECURE_URL="${WEBSITE_UNSECURE_URL}" WEBSITE_SECURE_URL="${WEBSITE_SECURE_URL}" \
         RDS_USERNAME="${RDS_USERNAME}" RDS_PASSWORD="${RDS_PASSWORD}" RDS_HOSTNAME="${RDS_HOSTNAME}" RDS_PORT="${RDS_PORT}" RDS_DB_NAME="${RDS_DB_NAME}" \
         AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \

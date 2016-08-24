@@ -18,6 +18,8 @@ $RDS_HOSTNAME = getenv('RDS_HOSTNAME');
 $RDS_PORT = getenv('RDS_PORT');
 $RDS_DB_NAME = getenv('RDS_DB_NAME');
 
+$ENCRYPTION_KEY = getenv('ENCRYPTION_KEY');
+
 
 
 echo "Setting default database settings\n";
@@ -76,6 +78,9 @@ if ($ELASTICACHE_CONNECTION) {
         )
     );
 }
+
+$config['crypt'] = array('key' => $ENCRYPTION_KEY);
+
 
 echo "Overwriting env file with respective cache settings\n";
 
