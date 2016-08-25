@@ -109,8 +109,22 @@ if [ -z "${AVOID_COMPOSER}" ]; then
     fi
 fi
 
-echo "Patching get.php bug related to database media storage.. TODO remove this patch."
-curl -o /src/vendor/magento/module-media-storage/Model/File/Storage/Request.php https://raw.githubusercontent.com/peec/magento2/a8fcd3495b6d119b6f1fef6b6f97f22f834a12cb/app/code/Magento/MediaStorage/Model/File/Storage/Request.php
+
+
+if [ -d /magentomedia ]; then
+   
+   if [ -d /src/pub/media ] && [ ! -L /src/pub/media ]; then
+       echo "Using filesystem as media storage, removing magento's media storage folder and using symlink to /magentomedia"
+       
+       rm -rf /src/pub/media
+       mkdir -p /src/pub/media
+       ln -s /magentomedia /src/pub/media
+       chown -R www-data:www-data /src/pub/media
+       
+   fi
+   
+fi
+
 
 
 
