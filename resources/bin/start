@@ -119,6 +119,7 @@ if [ -d /magentomedia ]; then
        rm -rf /src/pub/media
        ln -s /magentomedia /src/pub/media
        chown -R www-data:www-data /src/pub/media
+       chown -R www-data:www-data /magentomedia
 
        
    fi
