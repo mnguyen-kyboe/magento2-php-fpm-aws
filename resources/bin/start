@@ -117,9 +117,9 @@ if [ -d /magentomedia ]; then
        echo "Using filesystem as media storage, removing magento's media storage folder and using symlink to /magentomedia"
        
        rm -rf /src/pub/media
-       mkdir -p /src/pub/media
        ln -s /magentomedia /src/pub/media
        chown -R www-data:www-data /src/pub/media
+
        
    fi
    
