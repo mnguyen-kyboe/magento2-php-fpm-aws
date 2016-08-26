@@ -110,7 +110,7 @@ if [ -z "${AVOID_COMPOSER}" ]; then
 fi
 
 
-
+# Support EFS storage..
 if [ -d /magentomedia ]; then
    
    if [ -d /src/pub/media ] && [ ! -L /src/pub/media ]; then
@@ -120,13 +120,23 @@ if [ -d /magentomedia ]; then
        ln -s /magentomedia /src/pub/media
        chown -R www-data:www-data /src/pub/media
        chown -R www-data:www-data /magentomedia
-
-       
    fi
+   
    
 fi
 
-
+if [ -d /magentostaticcache ]; then
+   if [ ! -L /src/pub/static/_cache ]; then
+       echo "Linking up /magentostaticcache to pub/static/_cache"
+       if [ -d /src/pub/static/_cache ]
+         rm -rf /src/pub/static/_cache
+       fi
+       mkdir -p /src/pub/static/_cache
+       ln -s /magentostaticcache /src/pub/static/_cache
+       chown -R www-data:www-data /src/pub/static/_cache
+       chown -R www-data:www-data /magentostaticcache
+   fi
+fi
 
 
 su -c "/usr/local/bin/setup-config" -s /bin/sh www-data
