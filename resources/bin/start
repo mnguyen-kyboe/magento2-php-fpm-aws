@@ -128,7 +128,7 @@ fi
 if [ -d /magentostaticcache ]; then
    if [ ! -L /src/pub/static/_cache ]; then
        echo "Linking up /magentostaticcache to pub/static/_cache"
-       if [ -d /src/pub/static/_cache ]
+       if [ -d /src/pub/static/_cache ]; then
          rm -rf /src/pub/static/_cache
        fi
        mkdir -p /src/pub/static/_cache
