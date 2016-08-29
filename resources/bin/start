@@ -131,7 +131,6 @@ if [ -d /magentostaticcache ]; then
        if [ -d /src/pub/static/_cache ]; then
          rm -rf /src/pub/static/_cache
        fi
-       mkdir -p /src/pub/static/_cache
        ln -s /magentostaticcache /src/pub/static/_cache
        chown -R www-data:www-data /src/pub/static/_cache
        chown -R www-data:www-data /magentostaticcache
