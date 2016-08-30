@@ -21,8 +21,8 @@ RUN apt-get install -y imagemagick pngnq tar unzip libpng-dev git
 
 #pngquant, optipng, pngout
 RUN git clone https://github.com/pornel/pngquant.git && cd ./pngquant && git checkout 2.0.2 && make && make install
-RUN curl -o optipng-0.7.5.tar.gz http://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.7.5/optipng-0.7.5.tar.gz && tar xvf optipng-0.7.5.tar.gz && cd ./optipng-0.7.5 && ./configure && make && make install
-RUN curl -o pngout-20130221-linux-static.tar.gz http://static.jonof.id.au/dl/kenutils/pngout-20130221-linux-static.tar.gz && tar xvf pngout-20130221-linux-static.tar.gz && mv ./pngout-20130221-linux-static/x86_64/pngout-static /usr/bin/pngout && chmod +x /usr/bin/pngout
+RUN curl -L http://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.7.5/optipng-0.7.5.tar.gz > optipng-0.7.5.tar.gz && tar xvf optipng-0.7.5.tar.gz && cd ./optipng-0.7.5 && ./configure && make && make install
+RUN curl -L http://static.jonof.id.au/dl/kenutils/pngout-20130221-linux-static.tar.gz > pngout-20130221-linux-static.tar.gz && tar xvf pngout-20130221-linux-static.tar.gz && mv ./pngout-20130221-linux-static/x86_64/pngout-static /usr/bin/pngout && chmod +x /usr/bin/pngout
 
 
 RUN pip install awscli
