@@ -87,6 +87,8 @@ ENV AWS_DEFAULT_REGION "eu-west-1"
 
 ENV ENCRYPTION_KEY "ZZuj9e231j9jd9sZj8ej21j8dwjd21j"
 
+ENV MAGENTO_MODULES_DISABLED "Magento_Usps Magento_Dhl Magento_Authorizenet Magento_Ups Magento_Fedex"
+
 
 COPY resources/conf/php.ini /usr/local/etc/php/
 COPY resources/conf/php-fpm.conf /usr/local/etc/

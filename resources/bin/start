@@ -84,6 +84,8 @@ echo "AVOID_COMPOSER: ${AVOID_COMPOSER}"
 
 echo "ENCRYPTION_KEY: ${ENCRYPTION_KEY}"
 
+echo "MAGENTO_MODULES_DISABLED: ${MAGENTO_MODULES_DISABLED}"
+
 
 
 # Make sure this line comes last, otherwise find/replace will replace above vars
@@ -196,6 +198,12 @@ su -c 'APP_DIR=/src ELASTICACHE_CONNECTION="${ELASTICACHE_CONNECTION}" \
         RDS_USERNAME="${RDS_USERNAME}" RDS_PASSWORD="${RDS_PASSWORD}" RDS_HOSTNAME="${RDS_HOSTNAME}" RDS_PORT="${RDS_PORT}" RDS_DB_NAME="${RDS_DB_NAME}" \
         AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
         /usr/local/bin/magento-replace-env-vars' -s /bin/sh www-data
+
+
+if [ -z "${MAGENTO_MODULES_DISABLED}" ]; then
+    /src/bin/magento module:disable $MAGENTO_MODULES_DISABLED
+fi
+
 
 
 echo "Setup upgrade"

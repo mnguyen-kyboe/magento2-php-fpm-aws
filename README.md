@@ -304,7 +304,7 @@ The following variables may be set to control the PHP environment:
 - `MAGENTO_ADMIN_USERNAME`: (default `admin`)
 - `MAGENTO_ADMIN_PASSWORD`: (default `Admin321123`)
 - `MAGENTO_USE_REWRITES`: (default `1`)
-
+- `MAGENTO_MODULES_DISABLED` (default: `Magento_Usps Magento_Dhl Magento_Authorizenet Magento_Ups Magento_Fedex`) 
 
 
 
