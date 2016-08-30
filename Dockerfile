@@ -16,7 +16,7 @@ RUN apt-get update \
 
 
 RUN apt-get install -y advancecomp pngcrush gifsicle jpegoptim
-RUN apt-get install -y libjpeg-progs libjpeg8-dbg libimage-exiftool-perl
+RUN apt-get install -y libjpeg-progs libjpeg62-turbo-dev libimage-exiftool-perl
 RUN apt-get install -y imagemagick pngnq tar unzip libpng-dev git
 
 #pngquant, optipng, pngout
