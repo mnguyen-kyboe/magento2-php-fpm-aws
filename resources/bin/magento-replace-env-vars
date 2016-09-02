@@ -26,6 +26,11 @@ echo "Setting default database settings\n";
 
 $dbh = new PDO("mysql:host={$RDS_HOSTNAME};port={$RDS_PORT};dbname={$RDS_DB_NAME}", $RDS_USERNAME, $RDS_PASSWORD);
 
+// Ensure that minification defaults is setup, before we finally run setup:static-content:deploy.
+$dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
+                    ('1', 'dev/css/merge_css_files'),('1', 'dev/css/merge_files'),('1', 'dev/css/minify_files'),
+                    ('1', 'dev/js/enable_js_bundling'),('1', 'dev/js/merge_files'),('1', 'dev/js/minify_files')
+                    ");
 
 // This only happens on first deploy since we use INSERT IGNORE INTO..
 // Set base url to empty if not set yet.. Because magento uses "localhost" as default and that does not work on AWS since beanstalk generates a URL.
