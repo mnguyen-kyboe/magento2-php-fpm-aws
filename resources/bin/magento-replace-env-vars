@@ -27,9 +27,12 @@ echo "Setting default database settings\n";
 $dbh = new PDO("mysql:host={$RDS_HOSTNAME};port={$RDS_PORT};dbname={$RDS_DB_NAME}", $RDS_USERNAME, $RDS_PASSWORD);
 
 // Ensure that minification defaults is setup, before we finally run setup:static-content:deploy.
+// Please note, this replaces any configured admin settings on every deploy. Because static-contents really needs to run after setting
+// any of these settings in admin. Hence we do it on each deploy.
 $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
                     ('1', 'dev/css/merge_css_files'),('1', 'dev/css/merge_files'),('1', 'dev/css/minify_files'),
-                    ('1', 'dev/js/enable_js_bundling'),('1', 'dev/js/merge_files'),('1', 'dev/js/minify_files')
+                    ('1', 'dev/js/enable_js_bundling'),('1', 'dev/js/merge_files'),('1', 'dev/js/minify_files'),
+                    ('1', 'dev/template/minify_html')
                     ");
 
 // This only happens on first deploy since we use INSERT IGNORE INTO..
