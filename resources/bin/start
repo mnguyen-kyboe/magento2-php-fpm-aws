@@ -140,6 +140,22 @@ if [ -d /magentostaticcache ]; then
 fi
 
 
+if [ -d /magentobackups ]; then
+   if [ ! -L /src/var/backups ]; then
+       echo "Linking up /magentobackups to var/backups"
+       if [ -d /src/var/backups ]; then
+         rm -rf /src/var/backups
+       fi
+       ln -s /magentobackups /src/var/backups
+       chown -R www-data:www-data /src/var/backups
+       chown -R www-data:www-data /magentobackups
+   fi
+fi
+
+
+
+
+
 su -c "/usr/local/bin/setup-config" -s /bin/sh www-data
 
 
