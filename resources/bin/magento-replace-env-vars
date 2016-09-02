@@ -63,6 +63,12 @@ if ($Outputs['SiteCDNDomainName']) {
                     ('$https', 'web/secure/base_static_url'), ('$http', 'web/unsecure/base_static_url')");
 }
 
+// Allow to set a resource control user.. Advanced usage.. Must create custom magento plugin for any effects...
+if (isset($Outputs['AwsControlAccessKey']) && isset($Outputs['AwsControlSecretKey'])) {
+    $dbh->exec("REPLACE INTO core_config_data (value, path) VALUES
+                    ('{$Outputs['AwsControlAccessKey']}', 'markant_aws/general/access_id'), ('{$Outputs['AwsControlSecretKey']}', 'markant_aws/general/secret_key')");
+}
+
 
 $file = getenv('APP_DIR') . '/app/etc/env.php';
 $config = require($file);
